@@ -47,6 +47,10 @@ class ServerController
 		{
 			if ( mUserInputQueue.isEmpty() )
 			{
+				if ( !running )
+				{
+					return;
+				}
 				try
 				{
 					Thread.sleep( 666 );
@@ -87,7 +91,7 @@ class ServerController
 		switch ( inputTokens[ 0 ] )
 		{
 			case "stop":
-				mServerApplication.stopApplication();
+				stop();
 				break;
 			case "create":
 				if ( inputTokens.length == 1 )
@@ -163,5 +167,22 @@ class ServerController
 	{
 		running
 			= false;
+		mServerApplication.stopApplication();
+	}
+
+	public
+	void setUserInputQueue(
+		List<String> userInputQueue
+	                      )
+	{
+		mUserInputQueue
+			= userInputQueue;
+	}
+
+	public
+	void setOutputQueue( List<String> outputQueue )
+	{
+		mOutputQueue
+			= outputQueue;
 	}
 }

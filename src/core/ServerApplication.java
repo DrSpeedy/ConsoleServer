@@ -2,12 +2,11 @@ package core;
 
 import account.AccountRepository;
 import execution.ExecutionModule;
+import log.LogModule;
 import net.NetModule;
 import ui.UIModule;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,31 +25,6 @@ class ServerApplication
 	 */
 	private ServerController
 		mServerController;
-	/**
-	 * module containing all the networking variables and
-	 * functions
-	 */
-	private
-	NetModule
-		mNetModule;
-	/**
-	 * module containing all the ui related variables and
-	 * functions
-	 */
-	private UIModule
-		mUIModule;
-	/**
-	 * queue of user input
-	 */
-	private
-	List<String>
-		mUserInputQueue;
-	/**
-	 * queue of output to be displayed
-	 */
-	private
-	List<String>
-		mOutputQueue;
 
 	private
 	HashMap<UUID, Session> mSessions;
@@ -61,23 +35,40 @@ class ServerApplication
 	public
 	ServerApplication()
 	{
+		ModuleLocator
+			moduleLocator
+			= ModuleLocator.getInstance();
+		// create and initialize the modules
+		// execution
+		ExecutionModule
+			executionModule
+			= new ExecutionModule();
+		// log
+		LogModule
+			logModule
+			= new LogModule();
+		// ui
+		UIModule
+			uiModule
+			= new UIModule();
+		// net
+		NetModule
+			netModule
+			= new NetModule();
+		// add the modules to the module locator
+		moduleLocator.addModule( executionModule );
+		moduleLocator.addModule( logModule );
+		moduleLocator.addModule( uiModule );
+		moduleLocator.addModule( netModule );
 		// create and initialize application variables
 		mAccountRepository
 			= new AccountRepository();
-		mUserInputQueue
-			= new LinkedList<String>();
-		mOutputQueue
-			= new LinkedList<String>();
 		mSessions = new HashMap<UUID, Session>();
+		// the application controller
 		mServerController
 			= new ServerController( this );
-		// create and initialize modules
-		// ui
-		mUIModule
-			= new UIModule();
-		// net
-		mNetModule
-			= new NetModule();
+		mServerController.setUserInputQueue( uiModule.getUserInputQueue() );
+		mServerController.setOutputQueue( uiModule.getOutputQueue() );
 	}
 
 	public static

@@ -1,5 +1,7 @@
 package net;
 
+import abstractions.Module;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,7 +9,13 @@ import java.util.LinkedList;
 import java.util.List;
 public
 class NetModule
+	extends Module
 {
+	/**
+	 * crappy pseudo state variable
+	 */
+	private boolean
+		             running;
 	/**
 	 * whether the server is accepting new connections
 	 */
@@ -30,6 +38,7 @@ class NetModule
 	public
 	NetModule()
 	{
+		super( "net");
 		mConnections
 			= new LinkedList<Connection>();
 		// need a way to use connections to make sessions
@@ -65,5 +74,21 @@ class NetModule
 	{
 		this.portNumber
 			= portNumber;
+	}
+
+	@Override
+	public
+	void start()
+	{
+		running
+			= true;
+	}
+
+	@Override
+	public
+	void stop()
+	{
+		running
+			= false;
 	}
 }
