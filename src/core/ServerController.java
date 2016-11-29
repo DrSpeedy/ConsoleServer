@@ -1,3 +1,5 @@
+package core;
+
 import java.util.ArrayList;
 import java.util.List;
 public
@@ -70,6 +72,15 @@ class ServerController
 	public
 	void handleInput( String input )
 	{
+		if ( input == null )
+		{
+			return;
+		}
+		input.trim();
+		if ( input.isEmpty() )
+		{
+			return;
+		}
 		String[]
 			inputTokens
 			= parseInput( input );
@@ -79,10 +90,34 @@ class ServerController
 				mServerApplication.stopApplication();
 				break;
 			case "create":
-				if(inputTokens.length < 3)
+				if ( inputTokens.length == 1 )
 				{
-					// usage: create
+					// more arguments required
 				}
+				else
+				{
+					switch ( inputTokens[ 1 ] )
+					{
+						case "account":
+							if ( inputTokens.length == 2 )
+							{
+								String
+									msg
+									= "usage: create account <name>";
+								mOutputQueue.add( msg );
+							}
+							break;
+						default:
+							String
+								msg
+								= "unrecognized argument: "
+								  + inputTokens[ 1 ];
+							mOutputQueue.add( msg );
+					}
+				}
+				break;
+			case "":
+
 				break;
 			default:
 				String

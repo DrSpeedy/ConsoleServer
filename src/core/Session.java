@@ -1,3 +1,5 @@
+package core;
+
 import net.Connection;
 
 import java.util.UUID;

@@ -1,6 +1,7 @@
 package ui.tasks;
 
 import java.util.List;
+
 public
 class OutputDisplayTask
 	implements Runnable
@@ -42,6 +43,12 @@ class OutputDisplayTask
 	{
 		running
 			= false;
+	}
+
+	public
+	List<String> getOutputQueue()
+	{
+		return mOutputQueue;
 	}
 
 	public

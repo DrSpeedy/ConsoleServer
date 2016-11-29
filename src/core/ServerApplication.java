@@ -1,4 +1,7 @@
+package core;
+
 import account.AccountRepository;
+import execution.ExecutionModule;
 import net.NetModule;
 import ui.UIModule;
 
@@ -72,8 +75,6 @@ class ServerApplication
 		// ui
 		mUIModule
 			= new UIModule();
-		mUIModule.setUserInputQueue( mUserInputQueue );
-		mUIModule.setOutputQueue( mOutputQueue );
 		// net
 		mNetModule
 			= new NetModule();
@@ -94,11 +95,18 @@ class ServerApplication
 	public
 	void startApplication()
 	{
-		mUIModule.start();
-		Thread
-			thread
-			= new Thread( mServerController );
-		thread.start();
+		ModuleLocator
+			moduleLocator
+			= ModuleLocator.getInstance();
+		// start the modules
+		moduleLocator.startAllModules();
+		ExecutionModule
+			executionModule
+			= (ExecutionModule)
+			moduleLocator
+				.getModule( "execution" );
+		// run the application controller
+		executionModule.execute( mServerController );
 	}
 
 	/**
@@ -107,7 +115,10 @@ class ServerApplication
 	public
 	void stopApplication()
 	{
-		mUIModule.stop();
-		mServerController.stop();
+		ModuleLocator
+			moduleLocator
+			= ModuleLocator.getInstance();
+		// stop the modules
+		moduleLocator.stopAllModules();
 	}
 }

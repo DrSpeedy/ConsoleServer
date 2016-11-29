@@ -21,10 +21,46 @@ class LoginTask
 	{
 		while(running)
 		{
-			// ask for login info
-			// check if any accounts with matching info
-			// if account found, create session
-			// else, continue asking for login info
+			try
+			{
+				// ask for login info
+				mConnection.send( "enter account name" );
+				// check if response is broken
+				String
+					response
+					= mConnection.receive();
+				if ( response == null )
+				{
+					//
+				}
+				response.trim();
+				if ( response.isEmpty() )
+				{
+					//
+				}
+				// check if any accounts with matching info
+				// TODO add way to access modules and repositories
+				// if account found, ask for password
+				mConnection.send( "enter account password" );
+				// check if response is broken
+				response
+					= mConnection.receive();
+				if ( response == null )
+				{
+					//
+				}
+				response.trim();
+				if ( response.isEmpty() )
+				{
+					//
+				}
+				// check if sent password matches account password
+				// else, continue asking for login info
+			}
+			catch ( Exception e )
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
